@@ -1,0 +1,61 @@
+from thinkbayes2 import Pmf
+
+pmf = Pmf()
+
+for x in [1,2,3,4,5,6]:
+    pmf.Set(x,1/6.0)
+
+
+
+
+pmf = Pmf()
+for word in word_list:
+    pmf.Incr(word,1)
+
+
+
+
+#2.2 The Cookie Problem
+
+pmf = Pmf()
+pmf.Set('Bowl 1', .5)
+pmf.Set('Bowl 2',.5)
+
+pmf.Mult('Bowl 1', .75)
+pmf.Mult('Bowl 2', .5)
+
+print(pmf.Prob('Bowl 1'))
+
+
+jupyter notebook --notebook-dir C:/Side_Projects
+#Now lets use classes
+
+class Cookie(Pmf):
+    def __init__(self, hypos):
+        Pmf.__init__(self)
+        for hypo in hypos:
+            self.Set(hypo, 1)
+        self.Normalize()
+        
+    def Update(self, data):
+        for hypo in self.Values():
+            like = self.Likelihood(data, hypo)
+            self.Mult(hyp, like)
+        self.Normalize()
+        
+    def Likelihood(self, data, hypo):
+        mix = self.Mult[hypo]
+        like = mix[data]
+        return(like)
+
+
+hypos = ['Bowl 1','Bowl2']
+pmf = Cookie(hypos)
+
+mixes = {
+'Bowl 1':dict(vanilla=.75, chocolate = .25),
+'Bowl 2':dict(vanilla=.5, chocolate = .5),
+}
+
+pmf.Update(mixes)
+
